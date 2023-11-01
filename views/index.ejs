@@ -1,0 +1,54 @@
+<!-- index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Social Media App</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css" />
+  </head>
+  <body>
+    <h1>Social Media App</h1>
+    <h2>Create a Post</h2>
+    <form action="/post" method="POST">
+      <input
+        type="text"
+        name="description"
+        placeholder="Post description"
+        required
+      />
+      <input type="text" name="link" placeholder="Image URL" required />
+      <!-- Changed from file input -->
+      <button type="submit">Create Post</button>
+    </form>
+    <div class="posts">
+      <% posts.forEach(post => { %>
+      <div class="post">
+        <img src="<%= post.link %>" alt="Post Image" />
+        <!-- Use the link for the image -->
+        <p><%= post.description %></p>
+        <h3>Comments</h3>
+        <form action="/comment" method="POST">
+          <input
+            type="text"
+            name="comment"
+            placeholder="Add a comment"
+            required
+          />
+          <input type="hidden" name="postId" value="<%= post.id %>" />
+          <button type="submit">Add Comment</button>
+        </form>
+        <!-- Add a delete button to each post -->
+        <form action="/post/delete/<%= post.id %>" method="POST">
+          <button type="submit">Delete Post</button>
+        </form>
+
+        <ul>
+          <% post.Comments.forEach(comment => { %>
+          <li><%= comment.comment %></li>
+          <% }); %>
+        </ul>
+      </div>
+      <% }); %>
+    </div>
+  </body>
+</html>
